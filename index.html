@@ -1,62 +1,89 @@
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>
-    「凌驭空间·OverSpace」安全团队
-    </title>
-    <link rel="shortcut icon" href="./Space-Black.png" type="image/x-icon">
-</head>
-
-<style>
-.parent{
-    display: table;
-    height: 80%;
-    width: 100%;
-}
-
-.box {
-    position: relative;
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.img {
-    height: 22px;
-}
-
-.link {
-    margin-top: 15px;
-}
-
-.center-font {
-    font-size: 25px;
-}
-
-.link-font {
-    font-size: 15px;
-}
-
-a {
-    color: inherit;
-}
-
-a:hover {
- color:#369;
- border-color:#369
-}
-
-</style>
-<body>
-<div class="parent">
-    <div class="box">
-        <div class="center center-font"><img src="./Space-Black.png" class="img">
-            「 凌驭空间·OverSpace 」
-        </div>
-        <div class="link link-font">
-            <a href="https://mp.weixin.qq.com/s/dOxyxyicpgUMnMVeIwg-6g" target="_blank">WeChat</a> | <a href="https://github.com/0verSp4ce" target="_blank">Github</a>
-        </div>
-    </div>
-</div>
-</body>
+<!DOCTYPE html> 
+<html lang="zh"> 
+<head> 
+    <meta charset="utf-8"> 
+    <title>凌驭空间（OverSpace）安全团队</title> 
+    <link rel="shortcut icon" href="./Space-Black.png" type="image/x-icon"> 
+    <style> 
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Arial', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background-color: #f3f4f6; 
+        } 
+        .parent { 
+            text-align: center; 
+            max-width: 600px;
+            padding: 20px;
+        } 
+        .box { 
+            display: inline-block; 
+            vertical-align: middle; 
+        } 
+        .img { 
+            height: 28px; 
+            vertical-align: middle; 
+            margin-right: 8px; 
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        } 
+        .img:hover {
+            transform: translateY(-3px) scale(1.1);
+        }
+        .center-font { 
+            font-size: 28px; 
+            color: #333; 
+            margin-bottom: 20px;
+        } 
+        .slogan-font { 
+            font-size: 16px; 
+            color: #666; 
+            margin: 20px 0 30px 0; 
+            line-height: 1.6;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        } 
+        .link-font { 
+            margin-top: 25px;
+        }
+        .link-font a { 
+            font-size: 16px; 
+            color: #555; 
+            text-decoration: none; 
+            margin: 0 10px; 
+            border-bottom: 1px solid transparent; 
+            transition: all 0.3s ease; 
+        } 
+        .link-font a:hover { 
+            color: #369; 
+            border-color: #369; 
+        }
+        .separator {
+            color: #ccc;
+            margin: 0 5px;
+        }
+    </style> 
+</head> 
+<body> 
+<div class="parent"> 
+    <div class="box"> 
+        <div class="center center-font">
+            <img src="./Space-Black.png" class="img">凌驭空间（OverSpace）
+        </div> 
+        <div class="slogan-font">
+            我们希望拥有驾驭网络空间的安全能力，<br>
+            并以此能力回馈网络空间，贡献自己的力量。
+        </div> 
+        <div class="link link-font"> 
+            <a href="https://mp.weixin.qq.com/s/dOxyxyicpgUMnMVeIwg-6g" target="_blank">WeChat</a>
+            <span class="separator">|</span>
+            <a href="https://github.com/0verSp4ce" target="_blank">Github</a> 
+        </div> 
+    </div> 
+</div> 
+</body> 
 </html>
