@@ -13,7 +13,7 @@
             @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Noto+Sans+SC:wght@300;400;700&display=swap");
 
             :root {
-                /* 默认深色主题 */
+                /* === 默认深色主题 (Dark Mode) === */
                 --bg-color: #080808;
                 --text-main: #ffffff;
                 --text-sub: #666666;
@@ -23,12 +23,12 @@
                 --btn-bg: rgba(255, 255, 255, 0.1);
                 --btn-hover: rgba(255, 255, 255, 0.2);
 
-                /* Logo 控制：深色模式下显示白Logo，隐藏黑Logo */
+                /* Logo 控制：深色模式下显示白Logo */
                 --logo-white-opacity: 1;
                 --logo-black-opacity: 0;
             }
 
-            /* 明亮主题变量 */
+            /* === 明亮主题 (Light Mode) === */
             [data-theme="light"] {
                 --bg-color: #f2f2f2;
                 --text-main: #111111;
@@ -39,7 +39,7 @@
                 --btn-bg: rgba(0, 0, 0, 0.05);
                 --btn-hover: rgba(0, 0, 0, 0.1);
 
-                /* Logo 控制：反转透明度 */
+                /* Logo 控制：明亮模式下显示黑Logo */
                 --logo-white-opacity: 0;
                 --logo-black-opacity: 1;
             }
@@ -56,7 +56,7 @@
                 justify-content: center;
                 align-items: center;
                 -webkit-font-smoothing: antialiased;
-                /* 全局色彩平滑过渡 */
+                /* 关键：0.5秒平滑过渡，避免时间切换时闪瞎眼 */
                 transition:
                     background-color 0.5s ease,
                     color 0.5s ease;
@@ -103,28 +103,23 @@
                 opacity: 0;
             }
 
-            /* === Logo 核心区域 === */
             .logo-wrapper {
-                width: 64px; /* 固定宽度 */
-                height: 64px; /* 固定高度，防止布局抖动 */
+                width: 64px;
+                height: 64px;
                 margin: 0 auto 40px auto;
-                display: grid; /* 使用 Grid 让两张图重叠在同一个格子 */
+                display: grid;
                 place-items: center;
             }
 
             .logo-img {
                 width: 100%;
                 height: auto;
-                grid-area: 1 / 1; /* 两张图都放在第一行第一列 */
-                transition: opacity 0.5s ease; /* 关键：0.5秒丝滑渐变 */
+                grid-area: 1 / 1;
+                transition: opacity 0.5s ease;
             }
 
-            .logo-white {
-                opacity: var(--logo-white-opacity);
-            }
-            .logo-black {
-                opacity: var(--logo-black-opacity);
-            }
+            .logo-white { opacity: var(--logo-white-opacity); }
+            .logo-black { opacity: var(--logo-black-opacity); }
 
             h1 {
                 font-size: 2.2rem;
@@ -188,60 +183,33 @@
             }
 
             @keyframes calmFadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
             }
 
             @media (max-width: 600px) {
-                h1 {
-                    font-size: 1.8rem;
-                }
-                .desc {
-                    font-size: 0.9rem;
-                    padding: 0 10px;
-                }
-                .theme-toggle {
-                    top: 20px;
-                    right: 20px;
-                }
+                h1 { font-size: 1.8rem; }
+                .desc { font-size: 0.9rem; padding: 0 10px; }
+                .theme-toggle { top: 20px; right: 20px; }
             }
         </style>
     </head>
     <body>
         <button class="theme-toggle" id="themeToggle" aria-label="Switch Theme">
-            <!-- 太阳图标 (在深色模式显示) -->
+            <!-- 太阳图标 (在深色模式显示，点击变亮) -->
             <svg id="icon-sun" viewBox="0 0 24 24">
-                <path
-                    d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"
-                />
+                <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
             </svg>
-            <!-- 月亮图标 (在亮色模式显示) -->
+            <!-- 月亮图标 (在亮色模式显示，点击变暗) -->
             <svg id="icon-moon" viewBox="0 0 24 24" style="display: none">
-                <path
-                    d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.16,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.06,6.83,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"
-                />
+                <path d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.16,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.06,6.83,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>
             </svg>
         </button>
 
         <div class="container">
-            <!-- Logo 容器：这里同时加载两张图，通过CSS透明度切换 -->
             <div class="logo-wrapper">
-                <img
-                    src="./Space-White.png"
-                    class="logo-img logo-white"
-                    alt="OverSpace Logo White"
-                />
-                <img
-                    src="./Space-Black.png"
-                    class="logo-img logo-black"
-                    alt="OverSpace Logo Black"
-                />
+                <img src="./Space-White.png" class="logo-img logo-white" alt="OverSpace Logo White" />
+                <img src="./Space-Black.png" class="logo-img logo-black" alt="OverSpace Logo Black" />
             </div>
 
             <h1>OVERSPACE</h1>
@@ -254,18 +222,8 @@
             <hr class="divider" />
 
             <div class="links">
-                <a
-                    href="https://mp.weixin.qq.com/s/dOxyxyicpgUMnMVeIwg-6g"
-                    target="_blank"
-                    class="link-item"
-                    >WeChat</a
-                >
-                <a
-                    href="https://github.com/0verSp4ce"
-                    target="_blank"
-                    class="link-item"
-                    >Github</a
-                >
+                <a href="https://mp.weixin.qq.com/s/dOxyxyicpgUMnMVeIwg-6g" target="_blank" class="link-item">WeChat</a>
+                <a href="https://github.com/0verSp4ce" target="_blank" class="link-item">Github</a>
             </div>
         </div>
 
@@ -276,30 +234,43 @@
             const iconSun = document.getElementById("icon-sun");
             const iconMoon = document.getElementById("icon-moon");
 
-            // 初始化主题
-            const savedTheme = localStorage.getItem("theme");
-            const systemPrefersLight = window.matchMedia(
-                "(prefers-color-scheme: light)",
-            ).matches;
-
-            if (savedTheme === "light" || (!savedTheme && systemPrefersLight)) {
-                setTheme("light");
+            /**
+             * 核心初始化逻辑
+             * 优先级：
+             * 1. LocalStorage (用户手动设置过)
+             * 2. Time (早上6点到下午6点为Light, 否则为Dark)
+             */
+            function initTheme() {
+                const savedTheme = localStorage.getItem("theme");
+                
+                if (savedTheme) {
+                    // 1. 如果用户手动选过，必须尊重用户选择
+                    setTheme(savedTheme);
+                } else {
+                    // 2. 如果没选过，判断当前小时数
+                    const hour = new Date().getHours();
+                    // 定义：6:00 <= 当前时间 < 18:00 为白天
+                    const isDayTime = hour >= 6 && hour < 18;
+                    
+                    setTheme(isDayTime ? "light" : "dark");
+                }
             }
 
+            // 切换按钮逻辑
             toggleBtn.addEventListener("click", () => {
-                const currentTheme =
-                    document.documentElement.getAttribute("data-theme");
-                const newTheme = currentTheme === "light" ? "dark" : "light";
+                const currentTheme = document.documentElement.getAttribute("data-theme");
+                // 如果当前没设置主题（默认），认为是dark
+                const activeTheme = currentTheme || "dark"; 
+                const newTheme = activeTheme === "light" ? "dark" : "light";
                 setTheme(newTheme);
             });
 
+            // 设置主题并保存
             function setTheme(theme) {
-                // 1. 设置 HTML 属性，触发 CSS 变量变化
                 document.documentElement.setAttribute("data-theme", theme);
-                // 2. 保存用户偏好
                 localStorage.setItem("theme", theme);
 
-                // 3. 切换按钮图标
+                // 图标切换
                 if (theme === "light") {
                     iconSun.style.display = "none";
                     iconMoon.style.display = "block";
@@ -308,6 +279,9 @@
                     iconMoon.style.display = "none";
                 }
             }
+
+            // 执行初始化
+            initTheme();
         </script>
     </body>
 </html>
