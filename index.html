@@ -56,7 +56,6 @@
                 justify-content: center;
                 align-items: center;
                 -webkit-font-smoothing: antialiased;
-                /* 关键：0.5秒平滑过渡，避免时间切换时闪瞎眼 */
                 transition:
                     background-color 0.5s ease,
                     color 0.5s ease;
@@ -196,11 +195,9 @@
     </head>
     <body>
         <button class="theme-toggle" id="themeToggle" aria-label="Switch Theme">
-            <!-- 太阳图标 (在深色模式显示，点击变亮) -->
             <svg id="icon-sun" viewBox="0 0 24 24">
                 <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
             </svg>
-            <!-- 月亮图标 (在亮色模式显示，点击变暗) -->
             <svg id="icon-moon" viewBox="0 0 24 24" style="display: none">
                 <path d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.16,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.06,6.83,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>
             </svg>
@@ -235,42 +232,13 @@
             const iconMoon = document.getElementById("icon-moon");
 
             /**
-             * 核心初始化逻辑
-             * 优先级：
-             * 1. LocalStorage (用户手动设置过)
-             * 2. Time (早上6点到下午6点为Light, 否则为Dark)
+             * 函数：仅改变 UI，不保存到 localStorage
              */
-            function initTheme() {
-                const savedTheme = localStorage.getItem("theme");
-                
-                if (savedTheme) {
-                    // 1. 如果用户手动选过，必须尊重用户选择
-                    setTheme(savedTheme);
-                } else {
-                    // 2. 如果没选过，判断当前小时数
-                    const hour = new Date().getHours();
-                    // 定义：6:00 <= 当前时间 < 18:00 为白天
-                    const isDayTime = hour >= 6 && hour < 18;
-                    
-                    setTheme(isDayTime ? "light" : "dark");
-                }
-            }
-
-            // 切换按钮逻辑
-            toggleBtn.addEventListener("click", () => {
-                const currentTheme = document.documentElement.getAttribute("data-theme");
-                // 如果当前没设置主题（默认），认为是dark
-                const activeTheme = currentTheme || "dark"; 
-                const newTheme = activeTheme === "light" ? "dark" : "light";
-                setTheme(newTheme);
-            });
-
-            // 设置主题并保存
-            function setTheme(theme) {
+            function applyTheme(theme) {
+                // 1. 设置 HTML 属性
                 document.documentElement.setAttribute("data-theme", theme);
-                localStorage.setItem("theme", theme);
 
-                // 图标切换
+                // 2. 切换按钮图标
                 if (theme === "light") {
                     iconSun.style.display = "none";
                     iconMoon.style.display = "block";
@@ -280,7 +248,41 @@
                 }
             }
 
-            // 执行初始化
+            /**
+             * 初始化逻辑：
+             * 1. 优先检查 localStorage (用户是否手动设置过)
+             * 2. 如果没有，检查时间 (自动模式，但 不保存 状态)
+             */
+            function initTheme() {
+                const savedTheme = localStorage.getItem("theme");
+                
+                if (savedTheme) {
+                    // 用户以前点过，听用户的
+                    applyTheme(savedTheme);
+                } else {
+                    // 用户没点过，听时间的（但是不存！）
+                    const hour = new Date().getHours();
+                    const isDayTime = hour >= 6 && hour < 18;
+                    const autoTheme = isDayTime ? "light" : "dark";
+                    
+                    applyTheme(autoTheme);
+                }
+            }
+
+            // 切换按钮点击事件
+            toggleBtn.addEventListener("click", () => {
+                // 获取当前实际显示的主题
+                const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+                const newTheme = currentTheme === "light" ? "dark" : "light";
+                
+                // 1. 改变 UI
+                applyTheme(newTheme);
+                
+                // 2. 只有用户点击时，才保存偏好！
+                localStorage.setItem("theme", newTheme);
+            });
+
+            // 启动
             initTheme();
         </script>
     </body>
